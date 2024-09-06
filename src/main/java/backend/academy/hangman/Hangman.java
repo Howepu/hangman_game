@@ -39,17 +39,9 @@ public class Hangman {
         while (!game.isGameOver()) {
             game.drawHangman();
             System.out.println("Слово: " + game.getDisplayedWord());
-            System.out.print("Введите букву: ");
-            while (true) {
-                String input = console.nextLine();
-                if (input.length() != 1) {
-                    System.out.println("Введите одну букву!");
-                } else {
-                    char guess = input.charAt(0);
-                    game.makeGuess(guess);
-                    break;
-                }
-            }
+            System.out.println("Введите букву: ");
+            String guess = console.nextLine();
+            game.makeGuess(guess);
         }
 
         if (game.isWon()) {

@@ -22,28 +22,34 @@ public class GameLogic {
         Arrays.fill(displayedWord, '_');
     }
 
-    public void makeGuess(char guess) {
+    public void makeGuess(String guess) {
 
+        if (guess.length() != 1) {
+            System.out.println("Введите одну букву!");
+            return;
+        }
 
-        guess = Character.toLowerCase(guess);
+        char letter = guess.charAt(0);
 
-        if (guessedLetters.contains(guess)) {
+        letter = Character.toLowerCase(letter);
+
+        if (guessedLetters.contains(letter)) {
             System.out.println("Вы уже гадали эту букву. Попробуйте другую.");
             return;
         }
 
-        if (Character.toString(guess).equals(" ")) {
+        if (Character.toString(letter).equals(" ")) {
             System.out.print("Введите букву корректно!");
             return;
         }
 
-        guessedLetters.add(guess);
+        guessedLetters.add(letter);
 
         if (word.contains(String.valueOf(guess))) {
             System.out.println("Правильно!");
             for (int i = 0; i < word.length(); i++) {
-                if (word.charAt(i) == guess) {
-                    displayedWord[i] = guess;
+                if (word.charAt(i) == letter) {
+                    displayedWord[i] = letter;
                 }
             }
         }
