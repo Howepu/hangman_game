@@ -42,12 +42,12 @@ public class Hangman {
             System.out.print("Введите букву: ");
             while (true) {
                 String input = console.nextLine();
-                if (!input.isEmpty()) {
+                if (input.length() != 1) {
+                    System.out.println("Введите одну букву!");
+                } else {
                     char guess = input.charAt(0);
                     game.makeGuess(guess);
                     break;
-                } else {
-                    System.out.print("Пожалуйста, введите букву: ");
                 }
             }
         }
