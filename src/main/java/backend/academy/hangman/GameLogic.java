@@ -45,7 +45,7 @@ public class GameLogic {
 
         guessedLetters.add(letter);
 
-        if (word.contains(String.valueOf(guess))) {
+        if (word.contains(String.valueOf(letter))) {
             System.out.println("Правильно!");
             for (int i = 0; i < word.length(); i++) {
                 if (word.charAt(i) == letter) {
