@@ -10,7 +10,7 @@ public class GameLogic {
 
     private static final int MAX_ATTEMPTS = 6;
     @Getter private String word;
-    private int attemptsLeft;
+    @Getter private int attemptsLeft;
     private List<Character> guessedLetters;
     private char[] displayedWord;
 
@@ -23,6 +23,9 @@ public class GameLogic {
     }
 
     public void makeGuess(char guess) {
+
+
+        guess = Character.toLowerCase(guess);
 
         if (guessedLetters.contains(guess)) {
             System.out.println("Вы уже гадали эту букву. Попробуйте другую.");

@@ -29,7 +29,7 @@ public class Hangman {
             String difficultyInput = console.nextLine().toLowerCase();
             difficulty = difficultyInput.isEmpty() ? WordList.chooseRandomDifficulty(random) : difficultyInput;
             if (!WordList.isValidDifficulty(difficulty)) {
-                System.out.println("Неверная категория. Попробуйте снова");
+                System.out.println("Неверная сложность. Попробуйте снова");
             }
         }
 
@@ -43,7 +43,7 @@ public class Hangman {
             while (true) {
                 String input = console.nextLine();
                 if (!input.isEmpty()) {
-                    char guess = input.toLowerCase().charAt(0);
+                    char guess = input.charAt(0);
                     game.makeGuess(guess);
                     break;
                 } else {
