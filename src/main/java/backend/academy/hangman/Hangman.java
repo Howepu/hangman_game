@@ -2,13 +2,13 @@ package backend.academy.hangman;
 
 import java.util.Random;
 import java.util.Scanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @SuppressWarnings("uncommentedmain")
 public class Hangman {
     private static final int MAX_ATTEMPTS = 6;
-    private static final Logger LOGGER = LoggerFactory.getLogger(Hangman.class);
 
     // Частный конструктор для предотвращения создания экземпляров
     private Hangman() {
@@ -20,26 +20,26 @@ public class Hangman {
         Scanner console = new Scanner(System.in);
         Random random = new Random();
 
-        LOGGER.info("Игра Виселица");
+        log.info("Игра Виселица");
 
         String category = "";
         String difficulty = "";
 
         while (!WordList.isValidCategory(category)) {
-            LOGGER.info("Выберите категорию (животные/фрукты/города)");
+            log.info("Выберите категорию (животные/фрукты/города)");
             String categoryInput = console.nextLine().toLowerCase();
             category = categoryInput.isEmpty() ? WordList.chooseRandomCategory(random) : categoryInput;
             if (!WordList.isValidCategory(category)) {
-                LOGGER.info("Неверная категория. Попробуйте снова");
+                log.info("Неверная категория. Попробуйте снова");
             }
         }
 
         while (!WordList.isValidDifficulty(difficulty)) {
-            LOGGER.info("Выберите уровень сложности (лёгкий/средний/сложный)");
+            log.info("Выберите уровень сложности (лёгкий/средний/сложный)");
             String difficultyInput = console.nextLine().toLowerCase();
             difficulty = difficultyInput.isEmpty() ? WordList.chooseRandomDifficulty(random) : difficultyInput;
             if (!WordList.isValidDifficulty(difficulty)) {
-                LOGGER.info("Неверная сложность. Попробуйте снова");
+                log.info("Неверная сложность. Попробуйте снова");
             }
         }
         String word = WordList.chooseRandomWord(random, category, difficulty);
@@ -47,17 +47,17 @@ public class Hangman {
 
         while (!game.isGameOver()) {
             game.drawHangman();
-            LOGGER.info("Слово: " + game.getDisplayedWord());
-            LOGGER.info("Введите букву: ");
+            log.info("Слово: " + game.getDisplayedChars());
+            log.info("Введите букву: ");
             String guess = console.nextLine();
             game.makeGuess(guess);
         }
 
         if (game.isWon()) {
-            LOGGER.info("Поздравляем! Вы угадали слово: " + game.word());
+            log.info("Поздравляем! Вы угадали слово: " + game.word());
         } else {
             game.drawHangman();
-            LOGGER.info("Вы проиграли! Загаданное слово было: " + game.word());
+            log.info("Вы проиграли! Загаданное слово было: " + game.word());
         }
 
         console.close();

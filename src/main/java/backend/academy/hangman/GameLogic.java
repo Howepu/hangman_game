@@ -46,19 +46,11 @@ public class GameLogic {
     }
 
     public void makeGuess(String guess) {
-        if (guess.length() != 1) {
-            log.info("Введите одну букву!");
-            return;
-        }
+
 
         char letter = guess.toLowerCase().charAt(0);
 
-        if (guessedLetters.contains(letter)) {
-            log.info("Вы уже гадали эту букву. Попробуйте другую.");
-            return;
-        }
-
-        if (!Pattern.matches("[а-яА-Я]", guess)) { // Проверка на кириллицу
+        if (guess.length() != 1 || guessedLetters.contains(letter) || !Pattern.matches("[а-яА-Я]", guess)) {
             log.info("Введите букву корректно!");
             return;
         }
@@ -77,6 +69,7 @@ public class GameLogic {
             attemptsLeft--;
         }
     }
+
 
     public String getDisplayedChars() {
         StringBuilder displayedWordBuilder = new StringBuilder();
