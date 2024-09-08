@@ -62,6 +62,8 @@ public class WordList {
     public static String chooseRandomWord(Random random, String category, String difficulty) {
         for (String[] data : WORDS) {
             if (data[0].equals(category) && data[1].equals(difficulty)) {
+                // data.length - 2 (значит мы берём случайное число в диапозоне от 1 до значения длины строки без учитывания категории и сложности
+                // +2 означает, что index будет начиться с 3 слова в ряде, пропуская категорию и сложность
                 int wordIndex = random.nextInt(data.length - 2) + 2;
                 return data[wordIndex];
             }

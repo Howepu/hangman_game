@@ -1,15 +1,17 @@
 package backend.academy.hangman;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GameLogic {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameLogic.class);
     private static final int MAX_ATTEMPTS = 6;
     private static final int HEAD = 5;
     private static final int BODY = 4;
@@ -18,7 +20,7 @@ public class GameLogic {
     private static final int LEFT_LEG = 1;
     private static final int RIGHT_LEG = 0;
 
-    private static final String HANGMAN_TOP = "  ----- \n";
+    private static final String HANGMAN_TOP = " ----- \n";
     private static final String HANGMAN_HEAD = " |     O\n";
     private static final String HANGMAN_BODY = " |     |\n";
     private static final String HANGMAN_LEFT_ARM = " |    /|\n";
@@ -30,68 +32,69 @@ public class GameLogic {
 
     @Getter private String word;
     @Getter private int attemptsLeft;
-    private List<Character> guessedLetters;
-    private char[] displayedWord;
+    private Set<Character> guessedLetters;
+    private List<Character> displayedChars;
 
     public GameLogic(String word, int attemptsLeft) {
-        this.word = word;
+        this.word = word.toLowerCase();
         this.attemptsLeft = attemptsLeft;
-        this.guessedLetters = new ArrayList<>();
-        this.displayedWord = new char[word.length()];
-        Arrays.fill(displayedWord, '_');
+        this.guessedLetters = new HashSet<>();
+        this.displayedChars = new ArrayList<>();
+        for (char c : word.toCharArray()) {
+            displayedChars.add('_');
+        }
     }
 
     public void makeGuess(String guess) {
-        boolean isValidGuess = true;
-        String logMessage = "";
-
         if (guess.length() != 1) {
-            logMessage = "Введите одну букву!";
-            isValidGuess = false;
+            log.info("Введите одну букву!");
+            return;
         }
 
-        char letter = isValidGuess ? Character.toLowerCase(guess.charAt(0)) : ' ';
+        char letter = guess.toLowerCase().charAt(0);
 
-        if (isValidGuess && guessedLetters.contains(letter)) {
-            logMessage = "Вы уже гадали эту букву. Попробуйте другую.";
-            isValidGuess = false;
+        if (guessedLetters.contains(letter)) {
+            log.info("Вы уже гадали эту букву. Попробуйте другую.");
+            return;
         }
 
-        if (isValidGuess && letter == ' ') {
-            logMessage = "Введите букву корректно!";
-            isValidGuess = false;
+        if (!Pattern.matches("[а-яА-Я]", guess)) { // Проверка на кириллицу
+            log.info("Введите букву корректно!");
+            return;
         }
 
-        if (isValidGuess) {
-            guessedLetters.add(letter);
+        guessedLetters.add(letter);
 
-            if (word.contains(String.valueOf(letter))) {
-                logMessage = "Правильно!";
-                for (int i = 0; i < word.length(); i++) {
-                    if (word.charAt(i) == letter) {
-                        displayedWord[i] = letter;
-                    }
+        if (word.contains(String.valueOf(letter))) {
+            log.info("Правильно!");
+            for (int i = 0; i < word.length(); i++) {
+                if (word.charAt(i) == letter) {
+                    displayedChars.set(i, letter);
                 }
-            } else {
-                logMessage = "Неправильно!";
-                attemptsLeft--;
             }
+        } else {
+            log.info("Неправильно!");
+            attemptsLeft--;
         }
-
-        LOGGER.info(logMessage);
     }
 
-    public String getDisplayedWord() {
-        return String.valueOf(displayedWord);
+    public String getDisplayedChars() {
+        StringBuilder displayedWordBuilder = new StringBuilder();
+        for (char c : displayedChars) {
+            displayedWordBuilder.append(c);
+        }
+        return displayedWordBuilder.toString();
     }
 
     public boolean isGameOver() {
-        return attemptsLeft == 0 || Arrays.equals(displayedWord, word.toCharArray());
+        return attemptsLeft == 0 || displayedChars.equals(new HashSet<>(Collections.singleton(word.toCharArray())));
     }
 
     public boolean isWon() {
-        return Arrays.equals(displayedWord, word.toCharArray());
+        return displayedChars.equals(new HashSet<>(Collections.singleton(word.toCharArray())));
     }
+
+
 
     public void drawHangman() {
         StringBuilder hangman = new StringBuilder();
@@ -169,6 +172,6 @@ public class GameLogic {
                 break;
         }
 
-        LOGGER.info(hangman.toString());
+        log.info(hangman.toString());
     }
 }
