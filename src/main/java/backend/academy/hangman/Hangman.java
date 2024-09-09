@@ -5,18 +5,15 @@ import java.util.Random;
 import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 
-
-@Slf4j
 @SuppressWarnings("uncommentedmain")
+@Slf4j
 public class Hangman {
     private static final int MAX_ATTEMPTS = 6;
 
-    // Частный конструктор для предотвращения создания экземпляров
     private Hangman() {
         throw new AssertionError("Не удается создать экземпляр служебного класса");
     }
 
-    // Метод для управления игрой
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
         Random random = new Random();
@@ -31,7 +28,7 @@ public class Hangman {
             String categoryInput = console.nextLine().toLowerCase();
 
             if (categoryInput.isEmpty()) {
-                category = WordList.chooseRandomCategory(random);
+                category = WordSelector.chooseRandomCategory(random);
             } else {
                 category = Arrays.stream(Category.values())
                     .filter(c -> c.getName().equals(categoryInput))
@@ -49,7 +46,7 @@ public class Hangman {
             String difficultyInput = console.nextLine().toLowerCase();
 
             if (difficultyInput.isEmpty()) {
-                difficulty = WordList.chooseRandomDifficulty(random);
+                difficulty = WordSelector.chooseRandomDifficulty(random);
             } else {
                 difficulty = Arrays.stream(Difficulty.values())
                     .filter(d -> d.getName().equals(difficultyInput))
@@ -62,8 +59,9 @@ public class Hangman {
             }
         }
 
-        String word = WordList.chooseRandomWord(random, category, difficulty);
+        String word = WordSelector.chooseRandomWord(random, category, difficulty);
         GameLogic game = new GameLogic(word, MAX_ATTEMPTS);
+        game.drawHangman();
 
         while (!game.isGameOver()) {
             log.info("Слово: " + game.getDisplayedChars());

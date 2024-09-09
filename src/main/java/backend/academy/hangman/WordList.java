@@ -2,11 +2,9 @@ package backend.academy.hangman;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 
 
@@ -44,22 +42,7 @@ public class WordList {
         WORDS.get(category).put(difficulty, words);
     }
 
-    public static Category chooseRandomCategory(Random random) {
-        List<Category> categories = Arrays.asList(Category.values());
-        return categories.get(random.nextInt(categories.size()));
-    }
-
-    public static Difficulty chooseRandomDifficulty(Random random) {
-        List<Difficulty> difficulties = Arrays.asList(Difficulty.values());
-        return difficulties.get(random.nextInt(difficulties.size()));
-    }
-
-    public static String chooseRandomWord(Random random, Category category, Difficulty difficulty) {
-        List<String> words = WORDS.getOrDefault(category, Collections.emptyMap())
-            .getOrDefault(difficulty, Collections.emptyList());
-        if (words.isEmpty()) {
-            return "";
-        }
-        return words.get(random.nextInt(words.size()));
+    public static Map<Category, Map<Difficulty, List<String>>> getWords() {
+        return WORDS;
     }
 }
