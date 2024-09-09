@@ -44,6 +44,6 @@ public class HelpProvider {
     }
 
     public static String getHelp(String word) {
-        return HELP.getOrDefault(word, "Подсказка не доступна");
+        return HELP.getOrDefault(word, "Подсказка недоступна");
     }
 }
