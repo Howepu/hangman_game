@@ -2,73 +2,64 @@ package backend.academy.hangman;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-// класс для работы со словарём
+
+
 public class WordList {
 
-    private static final String CATEGORY_ANIMALS = "животные";
-    private static final String CATEGORY_FRUITS = "фрукты";
-    private static final String CATEGORY_CITIES = "города";
+    private static final Map<Category, Map<Difficulty, List<String>>> WORDS = new HashMap<>();
 
-    private static final String DIFFICULTY_EASY = "лёгкий";
-    private static final String DIFFICULTY_MEDIUM = "средний";
-    private static final String DIFFICULTY_HARD = "сложный";
+    static {
+        // Инициализация словаря
+        for (Category category : Category.values()) {
+            Map<Difficulty, List<String>> difficultyMap = new HashMap<>();
+            for (Difficulty difficulty : Difficulty.values()) {
+                difficultyMap.put(difficulty, new ArrayList<>());
+            }
+            WORDS.put(category, difficultyMap);
+        }
 
-    private static final String[][] WORDS = {
-        {CATEGORY_ANIMALS, DIFFICULTY_EASY, "лось", "лиса", "кот"},
-        {CATEGORY_ANIMALS, DIFFICULTY_MEDIUM, "медведь", "кенгуру", "собака"},
-        {CATEGORY_ANIMALS, DIFFICULTY_HARD, "выхухоль", "капибара", "ондатра"},
-        {CATEGORY_FRUITS, DIFFICULTY_EASY, "яблоко", "груша", "киви"},
-        {CATEGORY_FRUITS, DIFFICULTY_MEDIUM, "банан", "авокадо", "нектарин"},
-        {CATEGORY_FRUITS, DIFFICULTY_HARD, "алыча", "дуриан", "кешью"},
-        {CATEGORY_CITIES, DIFFICULTY_EASY, "омск", "москва", "берлин"},
-        {CATEGORY_CITIES, DIFFICULTY_MEDIUM, "хельсинки", "канберра", "бразилиа"},
-        {CATEGORY_CITIES, DIFFICULTY_HARD, "антанариву", "секешфехервар", "рейкьявик"},
-    };
+        // Заполнение словаря
+        addWords(Category.ANIMALS, Difficulty.EASY, Arrays.asList("лось", "лиса", "кот"));
+        addWords(Category.ANIMALS, Difficulty.MEDIUM, Arrays.asList("медведь", "кенгуру", "собака"));
+        addWords(Category.ANIMALS, Difficulty.HARD, Arrays.asList("выхухоль", "капибара", "ондатра"));
+        addWords(Category.FRUITES, Difficulty.EASY, Arrays.asList("яблоко", "груша", "киви"));
+        addWords(Category.FRUITES, Difficulty.MEDIUM, Arrays.asList("банан", "авокадо", "нектарин"));
+        addWords(Category.FRUITES, Difficulty.HARD, Arrays.asList("алыча", "дуриан", "кешью"));
+        addWords(Category.CITIES, Difficulty.EASY, Arrays.asList("омск", "москва", "берлин"));
+        addWords(Category.CITIES, Difficulty.MEDIUM, Arrays.asList("хельсинки", "канберра", "бразилиа"));
+        addWords(Category.CITIES, Difficulty.HARD, Arrays.asList("антанариву", "секешфехервар", "рейкьявик"));
+    }
 
-    // Частный конструктор для предотвращения создания экземпляров
     private WordList() {
         throw new AssertionError("Не удается создать экземпляр служебного класса");
     }
 
-    public static String chooseRandomCategory(Random random) {
-        List<String> categories = new ArrayList<>(
-            Arrays.asList(CATEGORY_ANIMALS, CATEGORY_FRUITS, CATEGORY_CITIES)
-        );
+    private static void addWords(Category category, Difficulty difficulty, List<String> words) {
+        WORDS.get(category).put(difficulty, words);
+    }
+
+    public static Category chooseRandomCategory(Random random) {
+        List<Category> categories = Arrays.asList(Category.values());
         return categories.get(random.nextInt(categories.size()));
     }
 
-    public static String chooseRandomDifficulty(Random random) {
-        List<String> difficulties = new ArrayList<>(
-            Arrays.asList(DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD)
-        );
+    public static Difficulty chooseRandomDifficulty(Random random) {
+        List<Difficulty> difficulties = Arrays.asList(Difficulty.values());
         return difficulties.get(random.nextInt(difficulties.size()));
     }
 
-    public static boolean isValidCategory(String category) {
-        return category.equals(CATEGORY_ANIMALS)
-            || category.equals(CATEGORY_FRUITS)
-            || category.equals(CATEGORY_CITIES);
-    }
-
-    public static boolean isValidDifficulty(String difficulty) {
-        return difficulty.equals(DIFFICULTY_EASY)
-            || difficulty.equals(DIFFICULTY_MEDIUM)
-            || difficulty.equals(DIFFICULTY_HARD);
-    }
-
-    public static String chooseRandomWord(Random random, String category, String difficulty) {
-        for (String[] data : WORDS) {
-            if (data[0].equals(category) && data[1].equals(difficulty)) {
-                // data.length - 2 (значит мы берём случайное число в диапозоне от 1 до значения длины строки
-                // без учитывания категории и сложности
-                // +2 означает, что index будет начиться с 3 слова в ряде, пропуская категорию и сложность
-                int wordIndex = random.nextInt(data.length - 2) + 2;
-                return data[wordIndex];
-            }
+    public static String chooseRandomWord(Random random, Category category, Difficulty difficulty) {
+        List<String> words = WORDS.getOrDefault(category, Collections.emptyMap())
+            .getOrDefault(difficulty, Collections.emptyList());
+        if (words.isEmpty()) {
+            return "";
         }
-        return "";
+        return words.get(random.nextInt(words.size()));
     }
 }
