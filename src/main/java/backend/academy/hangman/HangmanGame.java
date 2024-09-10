@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("uncommentedmain")
 @Slf4j
-public class Hangman {
+public class HangmanGame {
     private static final int MAX_ATTEMPTS = 6;
 
-    private Hangman() {
+    private HangmanGame() {
         throw new AssertionError("Не удается создать экземпляр служебного класса");
     }
 
@@ -25,7 +25,7 @@ public class Hangman {
 
         while (category == null) {
             log.info("Выберите категорию (животные/фрукты/города) или оставьте пустым для случайного выбора:");
-            String categoryInput = console.nextLine().toLowerCase();
+            String categoryInput = console.nextLine().trim().toLowerCase();
 
             if (categoryInput.isEmpty()) {
                 category = WordSelector.chooseRandomCategory(random);
@@ -43,7 +43,7 @@ public class Hangman {
 
         while (difficulty == null) {
             log.info("Выберите уровень сложности (лёгкий/средний/сложный) или оставьте пустым для случайного выбора:");
-            String difficultyInput = console.nextLine().toLowerCase();
+            String difficultyInput = console.nextLine().trim().toLowerCase();
 
             if (difficultyInput.isEmpty()) {
                 difficulty = WordSelector.chooseRandomDifficulty(random);
@@ -67,7 +67,7 @@ public class Hangman {
             log.info("Слово: " + game.getDisplayedChars());
             log.info("У вас осталось " + game.attemptsLeft() + " попыток!");
             log.info("Введите букву: ");
-            String guess = console.nextLine();
+            String guess = console.nextLine().trim().toLowerCase();
             game.makeGuess(guess);
             game.drawHangman();
         }
