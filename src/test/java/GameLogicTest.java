@@ -15,6 +15,8 @@ public class GameLogicTest {
     public void setUp() {
         game = new GameLogic("медведь", 6);
         helpService = new HelpService(false);
+        game.helpService(helpService);
+
     }
 
     @Test

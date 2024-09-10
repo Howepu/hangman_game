@@ -10,12 +10,13 @@ import java.io.InputStream;
 public class HelpServiceTest {
 
     private HelpService helpService;
-    private GameLogic gameLogic;
+    private GameLogic game;
 
     @BeforeEach
     public void setUp() {
-        helpService = new HelpService(false);
-        gameLogic = Mockito.spy(new GameLogic("кот", 3));
+        helpService = new HelpService(true);
+        game = Mockito.spy(new GameLogic("кот", 3));
+        game.helpService(helpService);
     }
 
     @Test
@@ -24,7 +25,7 @@ public class HelpServiceTest {
         InputStream stdin = System.in;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-        helpService.askForHelp(gameLogic);
+        helpService.askForHelp(game);
 
         Assertions.assertTrue(helpService.helpUsed());
         System.setIn(stdin);
@@ -36,7 +37,7 @@ public class HelpServiceTest {
         InputStream stdin = System.in;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-        helpService.askForHelp(gameLogic);
+        helpService.askForHelp(game);
 
         Assertions.assertFalse(helpService.helpUsed());
         System.setIn(stdin);
@@ -44,8 +45,8 @@ public class HelpServiceTest {
 
     @Test
     public void testAskForHelpNoAttemptsLeft() {
-        gameLogic = new GameLogic("кот", 0);
-        helpService.askForHelp(gameLogic);
+        game = new GameLogic("кот", 0);
+        helpService.askForHelp(game);
 
         Assertions.assertFalse(helpService.helpUsed());
     }

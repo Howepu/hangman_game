@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,7 +16,7 @@ public class GameLogic {
     @Getter private int attemptsLeft;
     @Getter private Set<String> guessedLetters;
     private List<Character> displayedChars;
-    private HelpService helpService;
+    @Setter HelpService helpService;
 
 
     public GameLogic(String word, int attemptsLeft) {

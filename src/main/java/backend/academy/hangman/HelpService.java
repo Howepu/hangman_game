@@ -20,8 +20,8 @@ public class HelpService {
             Scanner scanner = new Scanner(System.in);
             String response = scanner.nextLine().trim().toLowerCase();
             if ("да".equals(response)) {
-                String hint = HelpProvider.getHelp(gameLogic.word());
-                log.info("Подсказка: " + hint);
+                String help = HelpProvider.getHelp(gameLogic.word());
+                log.info("Подсказка: " + help);
                 helpUsed = true;
             } else if ("нет".equals(response) || "".equals(response)) {
                 log.info("Подсказка не была использована.");
@@ -30,7 +30,7 @@ public class HelpService {
     }
 
     private boolean shouldOfferHelp(int attemptsLeft) {
-        return !helpEnabled && attemptsLeft <= ATTEMPTS_TO_HELP && !helpUsed && attemptsLeft != 0;
+        return helpEnabled && attemptsLeft <= ATTEMPTS_TO_HELP && !helpUsed && attemptsLeft != 0;
     }
 
 
