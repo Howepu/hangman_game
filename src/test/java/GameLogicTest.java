@@ -101,8 +101,8 @@ public class GameLogicTest {
         game.makeGuess("в");
         game.makeGuess("е");
         game.makeGuess("д");
+        assertFalse(game.isGameOver());
         game.makeGuess("ь");
-
         assertTrue(game.isGameOver());
         assertTrue(game.isWon());
     }
@@ -112,5 +112,13 @@ public class GameLogicTest {
         game.makeGuess("л");
         game.makeGuess("б");
         assertFalse(game.isGameOver());
+    }
+
+    @Test
+    void testRepeatedGuess() {
+        game.makeGuess("м");
+        game.makeGuess("м");
+        assertTrue(game.guessedLetters().contains("м"));
+        assertEquals(6, game.attemptsLeft());
     }
 }
