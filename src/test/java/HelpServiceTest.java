@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HelpServiceTest {
 
@@ -20,35 +22,35 @@ public class HelpServiceTest {
     }
 
     @Test
-    public void testAskForHelpYes() {
+    void testAskForHelpYes() {
         String input = "да\n";
         InputStream stdin = System.in;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
         helpService.askForHelp(game);
 
-        Assertions.assertTrue(helpService.helpUsed());
+        assertTrue(helpService.helpUsed());
         System.setIn(stdin);
     }
 
     @Test
-    public void testAskForHelpNo() {
+    void testAskForHelpNo() {
         String input = "нет\n";
         InputStream stdin = System.in;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
         helpService.askForHelp(game);
 
-        Assertions.assertFalse(helpService.helpUsed());
+        assertFalse(helpService.helpUsed());
         System.setIn(stdin);
     }
 
     @Test
-    public void testAskForHelpNoAttemptsLeft() {
+    void testAskForHelpNoAttemptsLeft() {
         game = new GameLogic("кот", 0);
         helpService.askForHelp(game);
 
-        Assertions.assertFalse(helpService.helpUsed());
+        assertFalse(helpService.helpUsed());
     }
 
 

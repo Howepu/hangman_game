@@ -13,7 +13,7 @@ public class HangmanDrawer {
     private static final int LEFT_LEG = 1;
     private static final int RIGHT_LEG = 0;
 
-    private static final String HANGMAN_TOP = " ----- \n";
+    private static final String HANGMAN_TOP = "  ----- \n";
     private static final String HANGMAN_HEAD = " |     O\n";
     private static final String HANGMAN_BODY = " |     |\n";
     private static final String HANGMAN_LEFT_ARM = " |    /|\n";
@@ -28,7 +28,7 @@ public class HangmanDrawer {
     }
 
 
-    public static void drawHangman(int attemptsLeft) {
+    public static String drawHangman(int attemptsLeft) {
         StringBuilder hangman = new StringBuilder();
 
         // Основная часть виселицы
@@ -104,5 +104,6 @@ public class HangmanDrawer {
         }
 
         log.info(hangman.toString());
+        return hangman.toString();
     }
 }

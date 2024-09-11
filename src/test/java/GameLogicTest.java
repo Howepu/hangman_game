@@ -108,7 +108,7 @@ public class GameLogicTest {
     }
 
     @Test
-    public void testGameContinuesWithRemainingAttempts() {
+    void testGameContinuesWithRemainingAttempts() {
         game.makeGuess("л");
         game.makeGuess("б");
         assertFalse(game.isGameOver());
