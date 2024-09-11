@@ -65,7 +65,13 @@ public class HangmanGame {
 
         while (!game.isGameOver()) {
             log.info("Слово: " + game.getDisplayedChars());
-            log.info("У вас осталось " + game.attemptsLeft() + " попыток!");
+            if (game.attemptsLeft() >= MAX_ATTEMPTS - 1) {
+                log.info("У вас осталось " + game.attemptsLeft() + " попыток!");
+            } else if (game.attemptsLeft() >= 2) {
+                log.info("У вас осталось" + " " + game.attemptsLeft() + " попытки!");
+            } else if (game.attemptsLeft() == 1) {
+                log.info("У вас осталась " + game.attemptsLeft() + " попытка!");
+            }
             log.info("Введите букву: ");
             String guess = console.nextLine().trim().toLowerCase();
             game.makeGuess(guess);
