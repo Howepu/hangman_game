@@ -26,7 +26,7 @@
     ```bash
     cd hangman_game
     ```
-   Соберите проект с помощью Maven:
+3. Соберите проект с помощью Maven:
     ```bash
     mvn clean install
     ```
